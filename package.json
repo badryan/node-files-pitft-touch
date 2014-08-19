@@ -6,7 +6,7 @@
     },
     "repository" : {
       "type": "git",
-      "url": "https://github.com/badryan/node-files-PiTFT-touch/tree/master"
+      "url": "https://github.com/badryan/node-files-pitft-touch/tree/master"
     },
     "license": "Apache",
     "keywords": [ "node-red", "Raspberry Pi", "Adafruit", "PiTFT", "touch", "touch screen" ],
