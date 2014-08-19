@@ -1,4 +1,4 @@
-node-files-PiTFT-touch
+node-files-pitft-touch
 ======================
 
 Source files for a Raspberry Pi Adafruit PiTFT touch screen node for Node-RED
@@ -9,7 +9,7 @@ Install
 
 Run the following command in the root directory of your Node-RED install
 
-    npm install node-red-contrib-PiTFT-touch
+    npm install node-red-contrib-pitft-touch
   
   
 ###Input
