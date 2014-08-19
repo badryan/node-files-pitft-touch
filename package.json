@@ -1,0 +1,22 @@
+{
+    "name"         : "node-red-contrib-PiTFT-touch",
+    "version"      : "0.0.1",
+    "description"  : "This reads /dev/input/event0 on the Raspberry Pi, which is the Adafruit PiTFT touch screen if you used their tutorial to install the shield. *May* be compatible with other touch screens and other Linux-es.",
+    "dependencies": {
+    },
+    "repository" : {
+      "type": "git",
+      "url": "https://github.com/badryan/node-files-PiTFT-touch/tree/master"
+    },
+    "license": "Apache",
+    "keywords": [ "node-red", "Raspberry Pi", "Adafruit", "PiTFT", "touch", "touch screen" ],
+    "node-red"     : {
+        "nodes": {
+            "touch": "node-red-contrib-PiTFT-touch.js"
+        }
+    },
+    "author": {
+        "name": "Boris Adryan",
+        "email": "badryan@gmail.com"
+    }
+}
