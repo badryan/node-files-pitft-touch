@@ -12,7 +12,7 @@
     "keywords": [ "node-red", "Raspberry Pi", "Adafruit", "PiTFT", "touch", "touch screen" ],
     "node-red"     : {
         "nodes": {
-            "touch": "40-node-red-contrib-PiTFT-touch.js"
+            "touch": "40-node-red-contrib-pitft-touch.js"
         }
     },
     "author": {
