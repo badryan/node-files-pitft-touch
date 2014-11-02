@@ -15,9 +15,8 @@
  **/
 
 module.exports = function(RED) {
-	"use strict";
-    var FS = require("fs");
-
+  "use strict";
+   
     function parse(buffer) {
       if (
 ( (buffer.readUInt16LE(10) == 0 || buffer.readUInt16LE(10) == 1) && buffer.readUInt16LE(8) == 3) ||
@@ -31,43 +30,65 @@ module.exports = function(RED) {
        }
       }
     }
-
+    
     // The main node definition - most things happen in here
     function TouchNode(n) {
         // Create a RED node
         RED.nodes.createNode(this,n);
 
         // Store local copies of the node configuration (as defined in the .html)
-        this.topic = "touch";
-        var msg = { topic: this.topic };
+        var msg = { topic: "touch" };
+        this.device = n.device;
+        this.scalex = n.scalex;
+        this.scaley = n.scaley;
         var node = this;
-
+        
         var strX = "";
         var strY = "";
+       
+	var FS = require("fs");
+	var closeFS = 0;
+ 
+        if (!FS.existsSync(node.device)) {
+          throw "Info : PiTFT node can't find device.";
+        }
+
         // This is the stuff that's actually happening in the node
-        FS.open("/dev/input/event0", "r", function (err, fd) {
+        FS.open(node.device, "r", function (err, fd) {
         if (err) throw err;
         var buffer = new Buffer(16);
-            function startRead() {
+            
+          function startRead() {
               FS.read(fd, buffer, 0, 16, null, function (err, bytesRead) {
               //msg.payload = parse(buffer);
               var readElement = parse(buffer);
                 if (readElement != undefined && readElement.type == 3 && readElement.code == 1 && readElement.val > 0) {
-                  strX = '{ "x": '.concat(readElement.val,", ");
+                  strX = '{ "x": '.concat(Math.round(readElement.val/node.scalex),", ");
                 }
                 if (readElement != undefined && readElement.type == 3 && readElement.code == 0 && readElement.val > 0) {
-                  strY = '"y": '.concat(readElement.val," }");
+                  strY = '"y": '.concat(Math.round(readElement.val/node.scaley)," }");
                 }
-                if (readElement != undefined && readElement.code == 330 && readElement.val == 0) {
+                if (readElement != undefined && readElement.code == 330 && readElement.val == 0 && strX != "") {
                   msg.payload = strX.concat(strY);
                   strX = "";
                   strY = "";
                   node.send(msg);
                 }
-              startRead(); });
-            }
-        startRead();
+		if (closeFS == 1) {
+                    FS.close(fd)
+                } else {              
+		   startRead();
+                } 
+             });
+          }
+          
+          startRead();
+
         });
+
+       this.on('close', function() {
+           closeFS = 1;
+       });
 
     }
 
