@@ -25,6 +25,16 @@
    <!-- By convention, most nodes have a 'name' property. The following div -->
    <!-- provides the necessary field. Should always be the last option      -->
     <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i> Device</label>
+        <input type="text" id="node-input-device" placeholder="/dev/input/event0">
+    </div>
+    <div class="form-row">
+        <label for="node-input-scalex"><i class="icon-tag"></i> Scale X</label>
+        <input type="text" id="node-input-scalex" placeholder="/dev/input/event0">
+        <label for="node-input-scaley"><i class="icon-tag"></i> Scale Y</label>
+        <input type="text" id="node-input-scaley" placeholder="/dev/input/event0">
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
@@ -37,9 +47,9 @@
    <!-- This content appears in the Info sidebar when a node is selected     -->
    <!-- The first <p> is used as the pop-up tool tip when hovering over a    -->
    <!-- node in the palette.                                                 -->
-   <p>This reads <i>/dev/input/event0</i>, which is the Adafruit PiTFT touch screen if you used their tutorial to install the shield. May be compatible with other touch screens.</p>
+   <p>This reads <i>/dev/input/event0</i> (or any other input device), which is the Adafruit PiTFT touch screen if you used their tutorial to install the shield. May be compatible with other touch screens. Note that your Node-RED user needs to be member of the input group.</p>
    <p>This node doesn't do any fancy event handling ("gestures"), but just reports the last position where the user touched the screen before lifting the finger. This is useful for simple "touch a button on the screen" sort of operations.</p>
-   <p>Outputs an object called <b>msg</b> containing a <b>msg.payload</b>. msg.payload is a JSON String of the format {"x":10, "y":20}</p>
+   <p>Outputs an object called <b>msg</b> containing a <b>msg.payload</b>. msg.payload is a JSON String of the format {"x":10, "y":20}</p><p>ScaleX and ScaleY are linear scaling factors.</p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
@@ -48,6 +58,9 @@
     RED.nodes.registerType('touch',{
         category: 'input',      // the palette category
         defaults: {             // defines the editable properties of the node
+            device: {value:"/dev/input/event0", required:true},    //  along with default values.
+            scalex: {value:"1000", required:true, validate:RED.validators.number()},
+            scaley: {value:"1000", required:true, validate:RED.validators.number()},    //  along with default values.
             name: {value:""}    //  along with default values.
         },
         inputs:0,               // set the number of inputs - only 0 or 1
